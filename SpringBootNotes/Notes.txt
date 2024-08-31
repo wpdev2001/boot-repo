@@ -1,3 +1,4 @@
 31/08/2024
 ===========
 
+Revise Loose and Tight coupling with example.
