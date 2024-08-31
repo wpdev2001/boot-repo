@@ -1,4 +1,5 @@
 31/08/2024
 ===========
+git push -u <remote-url> <branch-name>
 
 Revise Loose and Tight coupling with example.
