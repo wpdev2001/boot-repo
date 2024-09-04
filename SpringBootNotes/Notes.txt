@@ -1,3 +1,38 @@
+05/09/2024
+===========
+Dependencies management using Spring
+In order to manage the dependencies we have to tell 3 important things to spring?
+
+1. About the beans
+--> Through @Components annotation(NOTE: we can use @Bean annotation which will be discussed later)
+2. About dependencies
+--> Through @Autowired annotation
+3. Where to search the beans
+--> use @ComponentScan() annotation
+
+NOTE: The @SpringBootApplication tells that : "scan for the beans in the base package in which this particular annotation file is present. In our case it is com.wp"
+OR if you want to scan for the beans in some other package then we use @ComponentScan(basePackages={"package1","package2",....})
+
+Q] Suppose in our application we use @Component Annotation for more than one bean class then in that case, does the code will run?
+--> No, And it will throw the following error!!!
+Parameter 0 of constructor in com.wp.couple.Person required a single bean, but 2 were found:
+	- cat: defined in file [C:\Users\devadmin\SpringB_codes\03_beans-DependenciesMngt\target\classes\com\wp\couple\Cat.class]
+	- dog: defined in file [C:\Users\devadmin\SpringB_codes\03_beans-DependenciesMngt\target\classes\com\wp\couple\Dog.class]
+
+This may be due to missing parameter name information
+
+Action:
+
+Consider marking one of the beans as @Primary, updating the consumer to accept multiple beans, or using @Qualifier to identify the bean that should be consumed
+-----------------------------------------------------
+
+In case of having multiple beans with @Component annoatation and to resolve the ambiguity we use '@Primary' annotation to tell spring boot application that give it more priority.
+
+Q] @ComponentScan(basePackages = {"com.wp","test"})  ??
+--> The above annotation tell that to scan for both the packages in order to get the components and to resolve the bean.
+
+========================================================================================================================
+
 31/08/2024
 ===========
 git push -u <remote-url> <branch-name>
