@@ -1,3 +1,35 @@
+06/09/2024
+===========
+Different ways of Dependency Injection
+1. Constructor based Dependency Injection
+ex: 
+@Autowired
+public Animal(Animal animal){
+	this.animal = animal;
+}
+
+2. Setter based Dependency Injection
+ex:
+
+private Animal animal;
+
+@Autowired
+public void setAnimal(Animal animal){
+	this.animal = animal;
+}
+
+3. Field or Property based Dependency Injection
+ex: 
+@Autowired
+Animal animal;
+
+Q] Which type of Dependency Injection we should use?
+--> If we are having some mandatory/compulsory dependency ==> must use constructor dependency injection
+--> If we are having optional dependency ==> must use setter dependency injection
+
+
+=====================================================================================================================
+
 05/09/2024
 ===========
 Dependencies management using Spring
