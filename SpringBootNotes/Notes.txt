@@ -27,6 +27,7 @@ Q] Which type of Dependency Injection we should use?
 --> If we are having some mandatory/compulsory dependency ==> must use constructor dependency injection
 --> If we are having optional dependency ==> must use setter dependency injection
 
+NOTE : By default the constructor injection happens automatically in the latest version??
 
 =====================================================================================================================
 
