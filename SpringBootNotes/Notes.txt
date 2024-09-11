@@ -2,7 +2,30 @@
 ===========
 In order to declare the samosa as a bean using bean annotation we have to use @Bean annotation on the method level bcz the bean annotation works on method
 
-NOTE: by default @SpringBootApplication class is our configuration class so we can use @Bean within this class without actually declaring the configuration class
+In order to declare the @Bean inside the configuration class we need to declare that class with using @Configuration annotation!!!
+
+SCOPE of the Bean:
+------------------
+1. Singleton - only one instance of the spring bean will be created for the spring container.
+2. Prototype - A new instance will be created every time the bean is requested from the spring container.
+3. Request - new instance of the bean will be created for each HTTP request
+4. Session - A new bean will be created for each HTTP session by the container
+5. Application - The application scope creates the bean instance for the lifecycle of a ServletContext
+6. WebSocket - Websocket scoped beans are stored in the WebSocket session attributes
+
+NOTE: 
+1. by default @SpringBootApplication class is our configuration class so we can use @Bean within this class without actually declaring the configuration class
+2. IMP: Whenever we declare the bean by using either @Component or @Bean annotation the spring will manage those beans and by default it will create the objects of that bean class by calling to default constructor!!!(Please confirm it once) --> For practical implementation refer to DemoProject
+3. Whenever we create the bean, by default it will follow Singleton scope
+
+How we can change the scope of the bean?
+--> Using @Scope("prototype") OR 
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE) annotations
+
+QUESTIONS:
+----------
+Q] What is the actuall diff between @Bean and @Component?
+Q] We can also declare the bean using the XML, so how to do that?
 
 06/09/2024
 ===========
