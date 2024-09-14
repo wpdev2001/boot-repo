@@ -159,3 +159,81 @@ git push -u <remote-url> <branch-name>
 Revise Loose and Tight coupling with example.
 
 This is the new file
+
+
+IMP thing about Dependency Injection(DI)
+----------------------------------------
+========================================
+Q] Could you just give me what developers don't need to manage when we are using dependency injection with the code example, like previously developers used to do this but as dependency injection came developers job became somewhat easier. Consider Class A and Class B for giving the code example
+
+Ans: 
+
+Dependency Injection: What Developers No Longer Need to Manage
+Dependency Injection (DI) is a design pattern that removes the responsibility of creating and managing dependencies from the component itself. This significantly simplifies development by reducing coupling and improving testability.
+
+Here's a breakdown of what developers no longer need to manage with DI:
+
+1. Manual Object Creation:
+Before DI: Developers had to create instances of required dependencies within the component's code.
+With DI: The framework (e.g., Spring, Guice) handles object creation and provides instances to the component.
+Example:
+
+Java
+// Before DI
+public class UserService {
+    private UserRepository userRepository;
+
+    public UserService() {
+        userRepository = new UserRepositoryImpl(); // Manual creation
+    }
+
+    // ...
+}
+
+// With DI
+public class UserService {
+    private UserRepository userRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;   
+
+    }
+
+    // ...
+}
+
+2. Dependency Management:
+Before DI: Developers had to manage the lifecycle of dependencies, including creation, destruction, and updates.
+With DI: The framework takes care of dependency management, ensuring that instances are created, destroyed, and updated as needed.
+
+3. Tight Coupling:
+Before DI: Components were tightly coupled to specific implementations of their dependencies.
+With DI: Components are loosely coupled to their dependencies, making them more flexible and easier to test.
+
+4. Test Setup:
+Before DI: Setting up test environments often involved creating and managing dependencies manually within test cases.
+With DI: Test frameworks (e.g., JUnit, Mockito) can easily inject mock or stub implementations of dependencies, simplifying testing.
+Example (using Mockito):
+
+Java
+@RunWith(MockitoJUnitRunner.class)
+public class UserServiceTest {
+    @InjectMocks
+    private UserService userService;
+
+    @Mock
+    private UserRepository userRepository;
+
+    @Test
+    public void   
+ testSaveUser() {
+        // ... set up expectations for userRepository ...
+
+        userService.saveUser(new User());
+
+        // ... verify interactions with userRepository ...
+    }
+}
+
+In essence, DI frees developers from the burden of managing dependencies, allowing them to focus on core business logic and improving the overall maintainability and testability of their applications.
