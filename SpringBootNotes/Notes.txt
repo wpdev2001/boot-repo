@@ -1,3 +1,54 @@
+15/19/2024
+===========
+
+Supppose we are injecting Soda(child) class in Pepsi(Parent).
+
+# Code snippet
+--------------
+[A]
+Pepsi pepsi1 = context.getBean(Pepsi.class);
+sout(pepsi1); // 1
+Soda soda1 = pepsi1.getSoda();
+sout(soda1);  // 2
+
+[B]
+Pepsi pepsi2 = context.getBean(Pepsi.class);
+sout(pepsi2); // 1
+Soda soda2 = pepsi2.getSoda();
+sout(soda2);  // 2
+
+Important cases:
+----------------
+
+Case 1:
+Pepsi Class : Singleton
+Soda Class : Singleton
+o/p: We will get the same references for A1, B1 & A2, B2, when we print their reference
+
+Case 2:
+Pepsi Class : Prototype
+Soda Class : Singleton
+o/p: We will get the different reference for both A1, B1 &  and same reference for A2, B2, when we print their reference
+
+Case 3:
+Pepsi Class : Prototype
+Soda Class : Prototype
+o/p: We will get the different reference for both A1, B1 &  and different reference for A2, B2, when we print their reference
+
+Case 4:
+Pepsi Class : Singleton
+Soda Class : Prototype
+Expected o/p:  we should get same reference for both A1, B1 &  and different reference for A2, B2, when we print their reference BUT its not the case, instead we are getting
+got o/p: the same references for A1, B1 & A2, B2, when we print their reference
+
+In order to get the expected output in case four we pass the additional parameter to @Scope annotation for which we want spring to create different objects(In this case it is our Soda class for case 4)
+==> 
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.TARGET_CLASS);
+public class Soda{
+:::
+}
+
+
 12/19/2024
 ===========
 In order to declare the samosa as a bean using bean annotation we have to use @Bean annotation on the method level bcz the bean annotation works on method
