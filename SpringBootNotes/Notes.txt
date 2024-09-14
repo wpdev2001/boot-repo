@@ -49,6 +49,12 @@ public class Soda{
 }
 
 
+@PostConstruct & @PreDestroy annotation(Bean Life Cycle): 
+-------------------------------------
+@PostConstruct : 
+@PreDestroy : 
+
+
 12/19/2024
 ===========
 In order to declare the samosa as a bean using bean annotation we have to use @Bean annotation on the method level bcz the bean annotation works on method
