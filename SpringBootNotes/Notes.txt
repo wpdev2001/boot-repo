@@ -1,7 +1,7 @@
 15/19/2024
 ===========
 
-Supppose we are injecting Soda(child) class in Pepsi(Parent).
+Supppose we are injecting Soda class in Pepsi.
 
 # Code snippet
 --------------
