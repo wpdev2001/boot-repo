@@ -1,4 +1,18 @@
-15/19/2024
+16/09/2024
+===========
+
+Important spring terminologies
+
+1. Beans : The objects which are created and managed by spring is called as beans.
+2. DI : Injecting the dependency automatically
+3. Autowiring : dependency which is getting injected antomatically by spring.
+4. IOC(Inversion of control) : Delegating certain tasks to spring container i.e., giving the control to spring container for creation and injection of objects.
+5. IOC container : which manages the IOC or which implements IOC.
+6. Application Context : It represents IOC container.
+
+===========================================================================================================================================
+
+15/09/2024
 ===========
 
 Supppose we are injecting Soda class in Pepsi.
@@ -51,11 +65,19 @@ public class Soda{
 
 @PostConstruct & @PreDestroy annotation(Bean Life Cycle): 
 -------------------------------------
-@PostConstruct : 
-@PreDestroy : 
+
+Suppose we have a class Student
+and we want to perform certain things like:
+1. Perform a task when bean is created
+2. Perform a task before object destroy
+
+@PostConstruct : we use this annotation on method which we want to get executed when the object of student class is created or student bean is created.
+OR PostConstruct annotation is used on a method that needs to be executed after DI is done to perform any initialization.
+
+@PreDestroy : we use this annotation on method which we want to get executed before the object of student class is destroyed or before student bean is getting destroy.
 
 
-12/19/2024
+12/09/2024
 ===========
 In order to declare the samosa as a bean using bean annotation we have to use @Bean annotation on the method level bcz the bean annotation works on method
 
