@@ -1,3 +1,18 @@
+09/10/2024
+===========
+
+In order to deal with multiple configurations we have 2 ways
+
+ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class,WebConfig.class,....);
+System.out.println(context);
+
+1. Declaring the class through @Configuration Annotation and declaring that particular class package inside @Component Scan. Make sure that the particular package is visible to ApplicationContext.
+
+2. Passing the .class file as a parameter in which we have define the class using @Configuration to the AnnotationConfigApplicationContext(AppConfig.class,WebConfig.class,....);
+Through this way you can pass multiple .class files in which we have used @Configuration annotation.
+
+============================================================================================================================
+
 16/09/2024
 ===========
 
