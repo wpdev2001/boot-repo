@@ -1,3 +1,11 @@
+NOTE: Important concept
+----------------------------------
+context.getBean("cat1", Animal.class)
+First Parameter ("cat1"): This is the name of the bean you want to retrieve. In this case, you are looking for a bean named "cat1". This should match the name defined in the @Component or @Bean annotation.
+Second Parameter (Animal.class): This is the expected type of the bean. Here, you are expecting that the bean named "cat1" implements or extends the Animal interface.
+
+
+
 09/10/2024
 ===========
 
