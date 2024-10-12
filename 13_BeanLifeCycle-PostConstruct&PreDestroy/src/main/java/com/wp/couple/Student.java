@@ -17,7 +17,7 @@ public class Student {
     //PostConstruct annotation
     @PostConstruct
     public void postConstruct(){
-        System.out.println("Method before instantiation of object");
+        System.out.println("Method AFTER instantiation of object");
     }
 
     //PreDestroy

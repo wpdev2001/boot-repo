@@ -28,6 +28,7 @@ public class Application {
 
 
 		ApplicationContext context = SpringApplication.run(Application.class, args);
+
 		Person personBean = context.getBean(Person.class);
 		personBean.playWithAnimal();
 	}
