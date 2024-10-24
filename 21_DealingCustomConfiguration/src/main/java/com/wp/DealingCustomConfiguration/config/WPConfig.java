@@ -17,6 +17,7 @@ public class WPConfig {
 
     public void setName(String name) {
         this.name = name;
+        System.out.println("SETTING THE NAME");
     }
 
     public String getPassword() {
