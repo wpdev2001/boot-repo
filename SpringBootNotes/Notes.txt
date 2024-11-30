@@ -1,0 +1,284 @@
+NOTE: Important concept
+----------------------------------
+context.getBean("cat1", Animal.class)
+First Parameter ("cat1"): This is the name of the bean you want to retrieve. In this case, you are looking for a bean named "cat1". This should match the name defined in the @Component or @Bean annotation.
+Second Parameter (Animal.class): This is the expected type of the bean. Here, you are expecting that the bean named "cat1" implements or extends the Animal interface.
+
+
+
+09/10/2024
+===========
+
+In order to deal with multiple configurations we have 2 ways
+
+ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class,WebConfig.class,....);
+System.out.println(context);
+
+1. Declaring the class through @Configuration Annotation and declaring that particular class package inside @Component Scan. Make sure that the particular package is visible to ApplicationContext.
+
+2. Passing the .class file as a parameter in which we have define the class using @Configuration to the AnnotationConfigApplicationContext(AppConfig.class,WebConfig.class,....);
+Through this way you can pass multiple .class files in which we have used @Configuration annotation.
+
+============================================================================================================================
+
+16/09/2024
+===========
+
+Important spring terminologies
+
+1. Beans : The objects which are created and managed by spring is called as beans.
+2. DI : Injecting the dependency automatically
+3. Autowiring : dependency which is getting injected antomatically by spring.
+4. IOC(Inversion of control) : Delegating certain tasks to spring container i.e., giving the control to spring container for creation and injection of objects.
+5. IOC container : which manages the IOC or which implements IOC.
+6. Application Context : It represents IOC container.
+
+===========================================================================================================================================
+
+15/09/2024
+===========
+
+Supppose we are injecting Soda class in Pepsi.
+
+# Code snippet
+--------------
+[A]
+Pepsi pepsi1 = context.getBean(Pepsi.class);
+sout(pepsi1); // 1
+Soda soda1 = pepsi1.getSoda();
+sout(soda1);  // 2
+
+[B]
+Pepsi pepsi2 = context.getBean(Pepsi.class);
+sout(pepsi2); // 1
+Soda soda2 = pepsi2.getSoda();
+sout(soda2);  // 2
+
+Important cases:
+----------------
+
+Case 1:
+Pepsi Class : Singleton
+Soda Class : Singleton
+o/p: We will get the same references for A1, B1 & A2, B2, when we print their reference
+
+Case 2:
+Pepsi Class : Prototype
+Soda Class : Singleton
+o/p: We will get the different reference for both A1, B1 &  and same reference for A2, B2, when we print their reference
+
+Case 3:
+Pepsi Class : Prototype
+Soda Class : Prototype
+o/p: We will get the different reference for both A1, B1 &  and different reference for A2, B2, when we print their reference
+
+Case 4:
+Pepsi Class : Singleton
+Soda Class : Prototype
+Expected o/p:  we should get same reference for both A1, B1 &  and different reference for A2, B2, when we print their reference BUT its not the case, instead we are getting
+got o/p: the same references for A1, B1 & A2, B2, when we print their reference
+
+In order to get the expected output in case four we pass the additional parameter to @Scope annotation for which we want spring to create different objects(In this case it is our Soda class for case 4)
+==> 
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.TARGET_CLASS);
+public class Soda{
+:::
+}
+
+
+@PostConstruct & @PreDestroy annotation(Bean Life Cycle): 
+-------------------------------------
+
+Suppose we have a class Student
+and we want to perform certain things like:
+1. Perform a task when bean is created
+2. Perform a task before object destroy
+
+@PostConstruct : we use this annotation on method which we want to get executed when the object of student class is created or student bean is created.
+OR PostConstruct annotation is used on a method that needs to be executed after DI is done to perform any initialization.
+
+@PreDestroy : we use this annotation on method which we want to get executed before the object of student class is destroyed or before student bean is getting destroy.
+
+
+12/09/2024
+===========
+In order to declare the samosa as a bean using bean annotation we have to use @Bean annotation on the method level bcz the bean annotation works on method
+
+In order to declare the @Bean inside the configuration class we need to declare that class with using @Configuration annotation!!!
+
+SCOPE of the Bean:
+------------------
+1. Singleton - only one instance of the spring bean will be created for the spring container.
+2. Prototype - A new instance will be created every time the bean is requested from the spring container.
+3. Request - new instance of the bean will be created for each HTTP request
+4. Session - A new bean will be created for each HTTP session by the container
+5. Application - The application scope creates the bean instance for the lifecycle of a ServletContext
+6. WebSocket - Websocket scoped beans are stored in the WebSocket session attributes
+
+NOTE: 
+1. by default @SpringBootApplication class is our configuration class so we can use @Bean within this class without actually declaring the configuration class
+2. IMP: Whenever we declare the bean by using either @Component or @Bean annotation the spring will manage those beans and by default it will create the objects of that bean class by calling to default constructor!!!(Please confirm it once) --> For practical implementation refer to DemoProject
+3. Whenever we create the bean, by default it will follow Singleton scope
+
+How we can change the scope of the bean?
+--> Using @Scope("prototype") OR 
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE) annotations
+
+QUESTIONS:
+----------
+Q] What is the actuall diff between @Bean and @Component?
+Q] We can also declare the bean using the XML, so how to do that?
+
+06/09/2024
+===========
+Different ways of Dependency Injection
+1. Constructor based Dependency Injection
+ex: 
+@Autowired
+public Animal(Animal animal){
+	this.animal = animal;
+}
+
+2. Setter based Dependency Injection
+ex:
+
+private Animal animal;
+
+@Autowired
+public void setAnimal(Animal animal){
+	this.animal = animal;
+}
+
+3. Field or Property based Dependency Injection
+ex: 
+@Autowired
+Animal animal;
+
+Q] Which type of Dependency Injection we should use?
+--> If we are having some mandatory/compulsory dependency ==> must use constructor dependency injection
+--> If we are having optional dependency ==> must use setter dependency injection
+
+NOTE : By default the constructor injection happens automatically in the latest version??
+
+=====================================================================================================================
+
+05/09/2024
+===========
+Dependencies management using Spring
+In order to manage the dependencies we have to tell 3 important things to spring?
+
+1. About the beans
+--> Through @Components annotation(NOTE: we can use @Bean annotation which will be discussed later)
+2. About dependencies
+--> Through @Autowired annotation
+3. Where to search the beans
+--> use @ComponentScan() annotation
+
+NOTE: The @SpringBootApplication tells that : "scan for the beans in the base package in which this particular annotation file is present. In our case it is com.wp"
+OR if you want to scan for the beans in some other package then we use @ComponentScan(basePackages={"package1","package2",....})
+
+Q] Suppose in our application we use @Component Annotation for more than one bean class then in that case, does the code will run?
+--> No, And it will throw the following error!!!
+Parameter 0 of constructor in com.wp.couple.Person required a single bean, but 2 were found:
+	- cat: defined in file [C:\Users\devadmin\SpringB_codes\03_beans-DependenciesMngt\target\classes\com\wp\couple\Cat.class]
+	- dog: defined in file [C:\Users\devadmin\SpringB_codes\03_beans-DependenciesMngt\target\classes\com\wp\couple\Dog.class]
+
+This may be due to missing parameter name information
+
+Action:
+
+Consider marking one of the beans as @Primary, updating the consumer to accept multiple beans, or using @Qualifier to identify the bean that should be consumed
+-----------------------------------------------------
+
+In case of having multiple beans with @Component annoatation and to resolve the ambiguity we use '@Primary' annotation to tell spring boot application that give it more priority.
+
+Q] @ComponentScan(basePackages = {"com.wp","test"})  ??
+--> The above annotation tell that to scan for both the packages in order to get the components and to resolve the bean.
+
+========================================================================================================================
+
+31/08/2024
+===========
+git push -u <remote-url> <branch-name>
+
+Revise Loose and Tight coupling with example.
+
+This is the new file
+
+
+IMP thing about Dependency Injection(DI)
+----------------------------------------
+========================================
+Q] Could you just give me what developers don't need to manage when we are using dependency injection with the code example, like previously developers used to do this but as dependency injection came developers job became somewhat easier. Consider Class A and Class B for giving the code example
+
+Ans: 
+
+Dependency Injection: What Developers No Longer Need to Manage
+Dependency Injection (DI) is a design pattern that removes the responsibility of creating and managing dependencies from the component itself. This significantly simplifies development by reducing coupling and improving testability.
+
+Here's a breakdown of what developers no longer need to manage with DI:
+
+1. Manual Object Creation:
+Before DI: Developers had to create instances of required dependencies within the component's code.
+With DI: The framework (e.g., Spring, Guice) handles object creation and provides instances to the component.
+Example:
+
+Java
+// Before DI
+public class UserService {
+    private UserRepository userRepository;
+
+    public UserService() {
+        userRepository = new UserRepositoryImpl(); // Manual creation
+    }
+
+    // ...
+}
+
+// With DI
+public class UserService {
+    private UserRepository userRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;   
+
+    }
+
+    // ...
+}
+
+2. Dependency Management:
+Before DI: Developers had to manage the lifecycle of dependencies, including creation, destruction, and updates.
+With DI: The framework takes care of dependency management, ensuring that instances are created, destroyed, and updated as needed.
+
+3. Tight Coupling:
+Before DI: Components were tightly coupled to specific implementations of their dependencies.
+With DI: Components are loosely coupled to their dependencies, making them more flexible and easier to test.
+
+4. Test Setup:
+Before DI: Setting up test environments often involved creating and managing dependencies manually within test cases.
+With DI: Test frameworks (e.g., JUnit, Mockito) can easily inject mock or stub implementations of dependencies, simplifying testing.
+Example (using Mockito):
+
+Java
+@RunWith(MockitoJUnitRunner.class)
+public class UserServiceTest {
+    @InjectMocks
+    private UserService userService;
+
+    @Mock
+    private UserRepository userRepository;
+
+    @Test
+    public void   
+ testSaveUser() {
+        // ... set up expectations for userRepository ...
+
+        userService.saveUser(new User());
+
+        // ... verify interactions with userRepository ...
+    }
+}
+
+In essence, DI frees developers from the burden of managing dependencies, allowing them to focus on core business logic and improving the overall maintainability and testability of their applications.

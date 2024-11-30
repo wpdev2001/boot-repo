@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+        "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+<!--    Created seperate bean for the address-->
+    <bean id="address" class="com.wp.beans.Address">
+<!--        Over here i have used different parameter name as compared to the variable name city-->
+        <property name="city1" value="Pune"/>
+        <property name="street" value="12345"/>
+
+    </bean>
+    <bean class = "com.wp.beans.Student" id="Student">
+        <property name="name" value="demo"/>
+        <property name="age" value="22"/>
+<!--        Here the address field is not the normal field so we have passed it by creating a different bean for the Address above-->
+        <property name="address" ref="address"/>
+
+<!--        Suppose we have a list of values so inorder to do so we can create the list-->
+<!--        <property name="friends">-->
+<!--            -->
+<!--            <list>-->
+<!--                <value></value>-->
+<!--                <value></value>-->
+<!--                <value></value>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--        Suppose we are having a Map-->
+        <property name="map">
+            <map>
+                <entry key="java" value="4000"/>
+                <entry key="c" value="3000"/>
+                <entry key="cpp" value="2000"/>
+                <entry key="python" value="1000"/>
+            </map>
+        </property>
+    </bean>
+
+</beans>
