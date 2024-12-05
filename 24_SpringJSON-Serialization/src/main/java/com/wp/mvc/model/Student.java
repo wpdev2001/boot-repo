@@ -1,13 +1,13 @@
 package com.wp.mvc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Student {
 
     private String name;
     private int rno;
     private String phone;
-    @JsonIgnore // This annotation tells to ignore particular field from JSON
     private String dept;
 
     public String getName() {
@@ -34,10 +34,15 @@ public class Student {
         this.phone = phone;
     }
 
+    /*This will ignore the value of that field while getting the data from java object,
+     displayed as JSON on browser*/
+    @JsonIgnore
     public String getDept() {
         return dept;
     }
 
+    //It will set the value while passing data from the JSON to java object
+    @JsonProperty
     public void setDept(String dept) {
         this.dept = dept;
     }
