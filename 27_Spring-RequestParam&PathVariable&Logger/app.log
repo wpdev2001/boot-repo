@@ -1,0 +1,47 @@
+2024-12-16T16:11:25.767Z  INFO 3972 --- [22_SpringMVCProject] [main] com.wp.mvc.Application                   : Starting Application using Java 19.0.2 with PID 3972 (C:\Users\skarvekar12\Desktop\Java_spring\27_Spring-RequestParam&PathVariable\target\classes started by skarvekar12 in C:\Users\skarvekar12\Desktop\Java_spring\27_Spring-RequestParam&PathVariable)
+2024-12-16T16:11:25.773Z  INFO 3972 --- [22_SpringMVCProject] [main] com.wp.mvc.Application                   : No active profile set, falling back to 1 default profile: "default"
+2024-12-16T16:11:28.172Z  INFO 3972 --- [22_SpringMVCProject] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-12-16T16:11:28.211Z  INFO 3972 --- [22_SpringMVCProject] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-16T16:11:28.211Z  INFO 3972 --- [22_SpringMVCProject] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-12-16T16:11:28.354Z  INFO 3972 --- [22_SpringMVCProject] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-12-16T16:11:28.356Z  INFO 3972 --- [22_SpringMVCProject] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2475 ms
+2024-12-16T16:11:29.460Z  INFO 3972 --- [22_SpringMVCProject] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-12-16T16:11:29.496Z  INFO 3972 --- [22_SpringMVCProject] [main] com.wp.mvc.Application                   : Started Application in 4.684 seconds (process running for 5.556)
+2024-12-16T16:11:36.702Z  INFO 3972 --- [22_SpringMVCProject] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-12-16T16:11:36.702Z  INFO 3972 --- [22_SpringMVCProject] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-12-16T16:11:36.708Z  INFO 3972 --- [22_SpringMVCProject] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-12-16T16:11:36.814Z ERROR 3972 --- [22_SpringMVCProject] [http-nio-8080-exec-2] c.wp.mvc.controllers.ProductController   : productName= its just testing testing argument
+2024-12-16T16:11:36.817Z  WARN 3972 --- [22_SpringMVCProject] [http-nio-8080-exec-2] c.wp.mvc.controllers.ProductController   : productId= 1234
+2024-12-16T16:11:36.817Z  INFO 3972 --- [22_SpringMVCProject] [http-nio-8080-exec-2] c.wp.mvc.controllers.ProductController   : productRating= 8
+2024-12-16T16:15:26.893Z  INFO 2552 --- [22_SpringMVCProject] [main] com.wp.mvc.Application                   : Starting Application using Java 19.0.2 with PID 2552 (C:\Users\skarvekar12\Desktop\Java_spring\27_Spring-RequestParam&PathVariable\target\classes started by skarvekar12 in C:\Users\skarvekar12\Desktop\Java_spring\27_Spring-RequestParam&PathVariable)
+2024-12-16T16:15:26.897Z  INFO 2552 --- [22_SpringMVCProject] [main] com.wp.mvc.Application                   : No active profile set, falling back to 1 default profile: "default"
+2024-12-16T16:15:29.362Z  INFO 2552 --- [22_SpringMVCProject] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-12-16T16:15:29.396Z  INFO 2552 --- [22_SpringMVCProject] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-16T16:15:29.398Z  INFO 2552 --- [22_SpringMVCProject] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-12-16T16:15:29.525Z  INFO 2552 --- [22_SpringMVCProject] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-12-16T16:15:29.526Z  INFO 2552 --- [22_SpringMVCProject] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2503 ms
+2024-12-16T16:15:30.590Z  INFO 2552 --- [22_SpringMVCProject] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-12-16T16:15:30.652Z  INFO 2552 --- [22_SpringMVCProject] [main] com.wp.mvc.Application                   : Started Application in 4.758 seconds (process running for 5.615)
+2024-12-16T16:15:45.762Z  INFO 2552 --- [22_SpringMVCProject] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-12-16T16:15:45.763Z  INFO 2552 --- [22_SpringMVCProject] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-12-16T16:15:45.766Z  INFO 2552 --- [22_SpringMVCProject] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-12-16T16:15:45.858Z ERROR 2552 --- [22_SpringMVCProject] [http-nio-8080-exec-1] c.wp.mvc.controllers.ProductController   : productName= its just testing testing argument
+2024-12-16T16:15:45.862Z  WARN 2552 --- [22_SpringMVCProject] [http-nio-8080-exec-1] c.wp.mvc.controllers.ProductController   : productId= 5678
+2024-12-16T16:15:45.862Z  INFO 2552 --- [22_SpringMVCProject] [http-nio-8080-exec-1] c.wp.mvc.controllers.ProductController   : productRating= 8
+2024-12-16T16:17:13.841Z  INFO 7508 --- [22_SpringMVCProject] [main] com.wp.mvc.Application                   : Starting Application using Java 19.0.2 with PID 7508 (C:\Users\skarvekar12\Desktop\Java_spring\27_Spring-RequestParam&PathVariable\target\classes started by skarvekar12 in C:\Users\skarvekar12\Desktop\Java_spring\27_Spring-RequestParam&PathVariable)
+2024-12-16T16:17:13.844Z DEBUG 7508 --- [22_SpringMVCProject] [main] com.wp.mvc.Application                   : Running with Spring Boot v3.3.4, Spring v6.1.13
+2024-12-16T16:17:13.846Z  INFO 7508 --- [22_SpringMVCProject] [main] com.wp.mvc.Application                   : No active profile set, falling back to 1 default profile: "default"
+2024-12-16T16:17:15.867Z  INFO 7508 --- [22_SpringMVCProject] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-12-16T16:17:15.894Z  INFO 7508 --- [22_SpringMVCProject] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-16T16:17:15.896Z  INFO 7508 --- [22_SpringMVCProject] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-12-16T16:17:16.000Z  INFO 7508 --- [22_SpringMVCProject] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-12-16T16:17:16.002Z  INFO 7508 --- [22_SpringMVCProject] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2051 ms
+2024-12-16T16:17:16.747Z  INFO 7508 --- [22_SpringMVCProject] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-12-16T16:17:16.767Z  INFO 7508 --- [22_SpringMVCProject] [main] com.wp.mvc.Application                   : Started Application in 3.927 seconds (process running for 4.734)
+2024-12-16T16:17:32.530Z  INFO 7508 --- [22_SpringMVCProject] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-12-16T16:17:32.530Z  INFO 7508 --- [22_SpringMVCProject] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-12-16T16:17:32.532Z  INFO 7508 --- [22_SpringMVCProject] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-12-16T16:17:32.615Z ERROR 7508 --- [22_SpringMVCProject] [http-nio-8080-exec-1] c.wp.mvc.controllers.ProductController   : productName= its just testing testing argument
+2024-12-16T16:17:32.620Z  WARN 7508 --- [22_SpringMVCProject] [http-nio-8080-exec-1] c.wp.mvc.controllers.ProductController   : productId= 5678
+2024-12-16T16:17:32.620Z  INFO 7508 --- [22_SpringMVCProject] [http-nio-8080-exec-1] c.wp.mvc.controllers.ProductController   : productRating= 8
+2024-12-16T16:17:32.621Z DEBUG 7508 --- [22_SpringMVCProject] [http-nio-8080-exec-1] c.wp.mvc.controllers.ProductController   : This is a test debug message
