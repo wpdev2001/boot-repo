@@ -50,6 +50,23 @@ public class TodoController {
     }
 
     //update todo
+    //@PostMapping("/{todoId}") --> This works, then why didn't we used PostMapping
+    @PutMapping("/{todoId}")
+    public ResponseEntity<Todo> updateTodo(@RequestBody Todo todoWithNewDetails, @PathVariable int todoId){
+        Todo newTodo = todoService.updateTodo(todoId, todoWithNewDetails);
+        return ResponseEntity.ok(newTodo);
+    }
 
+    //delete
+    @DeleteMapping("/{todoId}")
+    public ResponseEntity<String> deleteTodo(@PathVariable int todoId){
+        todoService.deleteTodo(todoId);
+        return ResponseEntity.ok("Todo deleted successfully!!!");
+    }
+    /*
+    QUESTIONS:
+    1. Why the different syntax for ResponseEntity.ok(newTodo) instead of using ResponseEntity.status(HttpStatus.OK).body(newTodo)?
+    2. What is the reason behind using PUT instead we could use POST in updated the Todo?
+     */
 
 }
