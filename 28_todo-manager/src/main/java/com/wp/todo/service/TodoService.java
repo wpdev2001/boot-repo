@@ -1,5 +1,6 @@
 package com.wp.todo.service;
 
+import com.wp.todo.exceptions.TodoNotFoundException;
 import com.wp.todo.models.Todo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -53,8 +55,20 @@ public class TodoService {
 
     public void deleteTodo(int todoId) {
         logger.info("DELETING TODO");
-        List<Todo> newList = todoList.stream().filter(t-> t.getId() != todoId).collect(Collectors.toList());
-        todoList = newList;
+
+        Optional<Todo> todoToDel = todoList.stream()
+                .filter(t->t.getId() == todoId)
+                .findFirst();
+
+        // If todoId found then delete that TODO
+        if(todoToDel.isPresent()){
+            todoList.remove(todoToDel.get());
+            logger.info("Todo with ID {} deleted.",todoId);
+        }
+        else{
+            logger.warn("Todo with ID {} not found.",todoId);
+            throw new TodoNotFoundException("Todo with ID " + todoId + " not found.");
+        }
     }
 }
 

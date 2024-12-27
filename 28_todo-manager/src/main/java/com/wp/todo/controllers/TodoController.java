@@ -1,5 +1,6 @@
 package com.wp.todo.controllers;
 
+import com.wp.todo.exceptions.TodoNotFoundException;
 import com.wp.todo.models.Todo;
 import com.wp.todo.service.TodoService;
 import org.slf4j.Logger;
@@ -60,8 +61,12 @@ public class TodoController {
     //delete
     @DeleteMapping("/{todoId}")
     public ResponseEntity<String> deleteTodo(@PathVariable int todoId){
-        todoService.deleteTodo(todoId);
-        return ResponseEntity.ok("Todo deleted successfully!!!");
+        try{
+            todoService.deleteTodo(todoId);
+            return ResponseEntity.ok("Todo deleted Successfully!!!");
+        }catch (TodoNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
     /*
     QUESTIONS:
