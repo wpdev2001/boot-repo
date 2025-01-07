@@ -1,17 +1,21 @@
 package com.wp.todo.service;
 
+import com.wp.todo.exceptions.ResourceNotFoundException;
 import com.wp.todo.exceptions.TodoNotFoundException;
 import com.wp.todo.models.Todo;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class TodoService {
 
     Logger logger = LoggerFactory.getLogger(TodoService.class);
@@ -31,7 +35,9 @@ public class TodoService {
 
     public Todo getTodoWithId(int todoId) {
         //need to understand this line
-        Todo todo = todoList.stream().filter(t -> todoId == t.getId()).findAny().get();
+        Todo todo = todoList.stream().filter(t -> todoId == t.getId()).findAny().orElseThrow( () ->new ResourceNotFoundException("Todo not found with given id", HttpStatus.NOT_FOUND));
+        //Run the below line and observe the output
+        // Todo todo = todoList.stream().filter(t -> todoId == t.getId()).findAny().orElseThrow( () ->new ResourceNotFoundException("Todo not found with given id", HttpStatus.INTERNAL_SERVER_ERROR));
         logger.info("Todo : {}",todo);
         return todo;
     }

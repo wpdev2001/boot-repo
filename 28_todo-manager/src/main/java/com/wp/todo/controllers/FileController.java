@@ -1,15 +1,17 @@
 package com.wp.todo.controllers;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/file")
@@ -37,5 +39,32 @@ public class FileController {
         If we upload the file of max size the code will throw the error so to avoid
         that error we need to add one property inside application.properties
          */
+    }
+
+    //Uploading multiple files
+    @PostMapping("/multiple")
+    public String uploadMultiple(@RequestParam("files") MultipartFile[] files){
+        Arrays.stream(files).forEach(file -> {
+            logger.info("File Name {}", file.getOriginalFilename());
+            logger.info("File Type {}", file.getContentType());
+            System.out.println("++++++++++++++++++++++++++++++++++++++++");
+        });
+        return "Handling multiple files";
+    }
+
+    //Serving the image files in response
+    @GetMapping("/serve-img")
+    public void serveImageHandler(HttpServletResponse response){
+        //image
+        try {
+
+            InputStream fileInputStream = new FileInputStream("images/img1.png");
+            response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+            StreamUtils.copy(fileInputStream,response.getOutputStream());
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }
