@@ -1,10 +1,17 @@
 package com.wp.todo.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
 public class Todo {
     private int id;
     private String title;
     private String content;
     private String status;
+    private Date addedDate;
+    @JsonFormat(pattern = "dd/MM/yyyy") //This annotation is used to change the date format
+    private Date toDoDate;
 
     public int getId() {
         return id;
@@ -38,11 +45,29 @@ public class Todo {
         this.status = status;
     }
 
-    public Todo(int id, String title, String content, String status) {
+    public Date getAddedDate() {
+        return addedDate;
+    }
+
+    public void setAddedDate(Date addedDate) {
+        this.addedDate = addedDate;
+    }
+
+    public Date getToDoDate() {
+        return toDoDate;
+    }
+
+    public void setToDoDate(Date toDoDate) {
+        this.toDoDate = toDoDate;
+    }
+
+    public Todo(int id, String title, String content, String status, Date addedDate, Date toDoDate) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.status = status;
+        this.addedDate = addedDate;
+        this.toDoDate = toDoDate;
     }
 
     public Todo() {
@@ -55,6 +80,8 @@ public class Todo {
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", status='" + status + '\'' +
+                ", addedDate=" + addedDate +
+                ", toDoDate=" + toDoDate +
                 '}';
     }
 }
