@@ -27,15 +27,12 @@ public class GlobalExceptionHandler {
         response.setMessage(ex.getMessage());
         response.setStatus(ex.getStatus());
         response.setSuccess(false);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        return ResponseEntity.status(ex.getStatus()).body(response);
         /*
         Can't i write it in this way:
         return ResponseEntity.status(ex.getStatus()).body(response);
-        I think we can but if the resource isn't found then it should throw the NOT FOUND only
-        hence the regular approach is more correct
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-
-        But why do we even passing the HttpStatus code for this as it should be fixed 404???
+        YES Ofcourse this should be the ideal apporach instead of
+        --> return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
          */
     }
 }
