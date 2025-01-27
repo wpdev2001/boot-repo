@@ -9,6 +9,7 @@ public class Todo {
     private String title;
     private String content;
     private String status;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date addedDate;
     @JsonFormat(pattern = "dd/MM/yyyy") //This annotation is used to change the date format
     private Date toDoDate;
