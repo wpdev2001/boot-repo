@@ -2,6 +2,9 @@ package com.wp.ormdemo.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "jpa_student")
 public class Student {
@@ -12,6 +15,11 @@ public class Student {
 
     @OneToOne(mappedBy = "student",cascade = CascadeType.ALL) // through this property this will add or delete the related records when we do add or delete operation on any of the table
     private Laptop laptop;
+
+    //many address
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<Address> addressList = new ArrayList<>();
+
 
     public Student() {
     }
@@ -53,5 +61,13 @@ public class Student {
 
     public void setLaptop(Laptop laptop) {
         this.laptop = laptop;
+    }
+
+    public List<Address> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<Address> addressList) {
+        this.addressList = addressList;
     }
 }
