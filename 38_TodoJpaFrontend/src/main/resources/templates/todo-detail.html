@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Todo Details</title>
+</head>
+<body>
+<h2>Todo Details</h2>
+<p><strong>Title:</strong> <span th:text="${todo.title}"></span></p>
+<p><strong>Content:</strong> <span th:text="${todo.content}"></span></p>
+<p><strong>Status:</strong> <span th:text="${todo.status}"></span></p>
+<p><strong>Todo Date:</strong> <span th:text="${todo.todoDate}"></span></p>
+<a href="/todos">Back to List</a>
+</body>
+</html>

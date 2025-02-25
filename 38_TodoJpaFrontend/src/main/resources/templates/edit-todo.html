@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Update Todo</title>
+</head>
+<body>
+
+<form th:action="@{/todos/update/{id}(id=${todo.id})}" th:object="${todo}" method="post">
+  <!-- Hidden field to store ID -->
+  <input type="hidden" name="id" th:value="${todo.id}">
+
+  <label>Title:</label>
+  <input type="text" name="title" th:value="${todo.title}" required>
+    <br>
+<!---->
+  <label>Content:</label>
+  <textarea name="content" th:text="${todo.content}" required></textarea>
+    <br>
+
+  <label>Todo Date:</label>
+  <input type="date" th:field="*{todoDate}" required>
+    <br>
+
+  <button type="submit">Update Todo</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add TODO</title>
+</head>
+<body>
+<h2>Add New TODO</h2>
+<form action="#" th:action="@{/todos/add}" th:object="${todo}" method="post">
+    <label>Title:</label>
+    <input type="text" th:field="*{title}" required>
+    <br>
+    <label>Content:</label>
+    <input type="text" th:field="*{content}" required>
+    <br>
+    <label>Status:</label>
+    <select th:field="*{status}">
+        <option value="Pending">Pending</option>
+        <option value="Completed">Completed</option>
+    </select>
+    <br>
+    <label>Todo Date:</label>
+    <input type="date" th:field="*{todoDate}" required>
+    <br>
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>
