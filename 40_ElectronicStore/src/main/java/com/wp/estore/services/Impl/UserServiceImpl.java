@@ -4,6 +4,7 @@ import com.wp.estore.dtos.UserDto;
 import com.wp.estore.entities.User;
 import com.wp.estore.repositories.UserRepository;
 import com.wp.estore.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -85,41 +89,58 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByEmail(String email) {
-        return null;
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User with given Email doesn't exists"));
+        return entityToDto(user);
     }
 
     @Override
     public List<UserDto> searchUser(String keyword) {
-        return List.of();
+        List<User> users = userRepository.findByNameContaining(keyword);
+        List<UserDto> userDtos = users.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
+        return userDtos;
+    }
+
+    //MODEL MAPPER APPROACH
+    //Converting entity -> Dto
+
+    private UserDto entityToDto(User savedUser){
+        return modelMapper.map(savedUser, UserDto.class);
+    }
+
+    //converting Dto -> entity
+    private User dtoToEntity(UserDto userDto){
+        return modelMapper.map(userDto,User.class);
     }
 
 
-    private UserDto entityToDto(User savedUser) {
-        UserDto userDto = UserDto.builder()
-                .userId(savedUser.getUserId())
-                .name(savedUser.getName())
-                .email(savedUser.getEmail())
-                .password(savedUser.getPassword())
-                .about(savedUser.getAbout())
-                .gender(savedUser.getGender())
-                .imageName(savedUser.getImageName())
-                .build();
-
-        return userDto;
-    }
-
-    //dto to Entity
-    private User dtoToEntity(UserDto userDto) {
-        User user = User.builder()
-                .userId(userDto.getUserId())
-                .name(userDto.getName())
-                .email(userDto.getEmail())
-                .password(userDto.getPassword())
-                .about(userDto.getAbout())
-                .gender(userDto.getGender())
-                .imageName(userDto.getImageName())
-                .build();
-
-        return user;
-    }
+    //MANUAL APPROACH
+    //entity to dto
+//    private UserDto entityToDto(User savedUser) {
+//        UserDto userDto = UserDto.builder()
+//                .userId(savedUser.getUserId())
+//                .name(savedUser.getName())
+//                .email(savedUser.getEmail())
+//                .password(savedUser.getPassword())
+//                .about(savedUser.getAbout())
+//                .gender(savedUser.getGender())
+//                .imageName(savedUser.getImageName())
+//                .build();
+//
+//        return userDto;
+//    }
+//
+//    //dto to Entity
+//    private User dtoToEntity(UserDto userDto) {
+//        User user = User.builder()
+//                .userId(userDto.getUserId())
+//                .name(userDto.getName())
+//                .email(userDto.getEmail())
+//                .password(userDto.getPassword())
+//                .about(userDto.getAbout())
+//                .gender(userDto.getGender())
+//                .imageName(userDto.getImageName())
+//                .build();
+//
+//        return user;
+//    }
 }
