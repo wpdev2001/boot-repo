@@ -3,6 +3,7 @@ package com.wp.estore.controllers;
 import com.wp.estore.dtos.ApiResponseMessage;
 import com.wp.estore.dtos.UserDto;
 import com.wp.estore.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +20,14 @@ public class UserController {
 
     //create User
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
         UserDto userDto1 = userService.createUser(userDto);
         return new ResponseEntity<>(userDto1, HttpStatus.CREATED);
     }
 
     //update user
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable String userId, @RequestBody UserDto newUserDetails){
+    public ResponseEntity<UserDto> updateUser(@PathVariable String userId, @Valid @RequestBody UserDto newUserDetails){
         UserDto userDto = userService.updateUser(newUserDetails, userId);
         return ResponseEntity.ok(userDto);
     }
