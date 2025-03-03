@@ -1,5 +1,6 @@
 package com.wp.estore.services;
 
+import com.wp.estore.dtos.PageableResponse;
 import com.wp.estore.dtos.UserDto;
 import com.wp.estore.entities.User;
 
@@ -13,7 +14,7 @@ public interface UserService {
     UserDto updateUser(UserDto userDto, String userId);
 
     //get all users
-    List<UserDto> getAllUser();
+    PageableResponse<UserDto> getAllUser(int pageNumber, int pageSize, String sortBy, String sortDir);
 
     //get user by id
     UserDto getUserById(String userId);

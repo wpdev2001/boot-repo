@@ -1,11 +1,18 @@
 package com.wp.estore.services.Impl;
 
+import com.wp.estore.dtos.PageableResponse;
 import com.wp.estore.dtos.UserDto;
 import com.wp.estore.entities.User;
+import com.wp.estore.exceptions.ResourceNotFoundException;
+import com.wp.estore.helper.Helper;
 import com.wp.estore.repositories.UserRepository;
 import com.wp.estore.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -42,7 +49,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(UserDto userDto, String userId) {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Todo with given Id not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Todo with given Id not found"));
         user.setName(userDto.getName());
         user.setAbout(userDto.getAbout());
         user.setGender(userDto.getGender());
@@ -58,13 +65,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Todo with given Id not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Todo with given Id not found"));
         userRepository.delete(user);
     }
 
     @Override
-    public List<UserDto> getAllUser() {
-        List<User> user_list = userRepository.findAll();
+    public PageableResponse<UserDto> getAllUser(int pageNumber, int pageSize, String sortBy, String sortDir) {
+
+        //MEHTHOD 2(USING STREAM APIs): Converting User list to UserDtoList
+
+        //Using ternary operator to sort the data according to fieldName and Direction
+        Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
+
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort); //Using Pagination and sorting
+        Page<User> page = userRepository.findAll(pageable);
+
+        PageableResponse<UserDto> pageableResponse = Helper.getPageableResponse(page, UserDto.class); // we have used Stream API concept inside Helper.java
+        return pageableResponse;
+
 
         //METHOD 1(NORMAL APPROACH): Converting User list to UserDtoList
 //        List<UserDto> userDtosList = new ArrayList<>();
@@ -74,22 +92,18 @@ public class UserServiceImpl implements UserService {
 //            userDtosList.add(userDto);
 //        }
 //        return userDtosList;
-
-        //MEHTHOD 2(USING STREAM APIs): Converting User list to UserDtoList
-        List<UserDto> userDtosList = user_list.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
-        return userDtosList;
     }
 
     @Override
     public UserDto getUserById(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User with given Id not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User with given Id not found"));
         UserDto userDto = entityToDto(user);
         return userDto;
     }
 
     @Override
     public UserDto getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User with given Email doesn't exists"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User with given Email doesn't exists"));
         return entityToDto(user);
     }
 
