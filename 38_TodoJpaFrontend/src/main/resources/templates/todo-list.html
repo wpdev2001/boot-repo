@@ -4,67 +4,189 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TODO List</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6e45e2, #88d3ce);
+            color: white;
+            margin: 0;
+            padding: 0;
         }
+
+        /* Navbar */
+        .navbar {
+            background-color: rgba(34, 34, 34, 0.9);
+            padding: 10px;
+        }
+
+        .navbar .nav-link, .navbar .navbar-brand {
+            color: #88d3ce !important;
+            font-weight: bold;
+        }
+
+        .navbar .nav-link:hover {
+            color: #ffffff !important;
+        }
+
+        /* Container */
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+            margin-top: 80px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Buttons */
+        .btn-add {
+            background-color: #6e45e2;
+            color: white;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-add:hover {
+            background-color: #88d3ce;
+            color: black;
+        }
+
+        .btn-edit, .btn-delete {
+            font-weight: bold;
+        }
+
+        .btn-edit {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .btn-delete {
+            background-color: red;
+            color: white;
+        }
+
+        /* Table */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
         }
-        table, th, td {
-            border: 1px solid black;
-        }
+
         th, td {
             padding: 10px;
+            border: 1px solid white;
             text-align: left;
         }
-        .btn {
-            padding: 5px 10px;
-            text-decoration: none;
-            color: white;
-            border-radius: 4px;
+
+        th {
+            background-color: rgba(255, 255, 255, 0.2);
         }
-        .btn-add { background-color: green; }
-        .btn-delete { background-color: red; }
-        .btn-info { background-color: red; }
+
+        /* Loading Animation */
+        .loading {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: black;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .hide-loading {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
-<h2>TODO List</h2>
-<a href="/todos/add" class="btn btn-add">Add New Todo</a>
 
-<table>
-    <thead>
-    <tr>
-        <th>Title</th>
-        <th>Content</th>
-        <th>Status</th>
-        <th>Todo Date</th>
-        <th>Actions</th>
-        <th>Other</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="todo : ${todos}">
-        <td th:text="${todo.title}"></td>
-        <td th:text="${todo.content}"></td>
-        <td th:text="${todo.status}"></td>
-        <td th:text="${todo.todoDate}"></td>
-        <td>
-            <form th:action="@{/todos/delete}" method="post" onsubmit="return confirm('Are you sure?')">
-                <input type="hidden" name="id" th:value="${todo.id}">
-                <button type="submit" class="btn btn-delete">Delete</button>
-            </form>
-        </td>
-        <td>
-            <!-- View Details Link -->
-            <a th:href="@{/todos/{id}(id=${todo.id})}" class="btn btn-info">View</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<!-- Loading Page -->
+<div class="loading" id="loading">Loading...</div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">TODO App</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/todos/add}">Add Todo</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Container -->
+<div class="container">
+    <h1 class="text-center">Your TODO List</h1>
+    <a th:href="@{/todos/add}" class="btn btn-add">+ Add New Todo</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Status</th>
+            <th>Todo Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="todo : ${todos}">
+            <td th:text="${todo.title}"></td>
+            <td th:text="${todo.content}"></td>
+            <td th:text="${todo.status}"></td>
+            <td th:text="${todo.todoDate}"></td>
+            <td>
+                <a th:href="@{/todos/edit/{id}(id=${todo.id})}" class="btn btn-edit btn-sm">Edit</a>
+                <form th:action="@{/todos/delete}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure?')">
+                    <input type="hidden" name="id" th:value="${todo.id}">
+                    <button type="submit" class="btn btn-delete btn-sm">Delete</button>
+                </form>
+                <a th:href="@{/todos/{id}(id=${todo.id})}" class="btn btn-info btn-sm">View</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Footer -->
+<div class="footer text-center">
+    <p>&copy; 2024 TODO App. All rights reserved.</p>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Hide Loading Screen After Page Load -->
+<script>
+    window.onload = function() {
+        document.getElementById("loading").classList.add("hide-loading");
+    };
+</script>
+
 </body>
 </html>
