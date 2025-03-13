@@ -3,6 +3,8 @@ package com.wp.estore.services;
 import com.wp.estore.dtos.CategoryDto;
 import com.wp.estore.dtos.PageableResponse;
 
+import java.util.List;
+
 public interface CategoryService {
     //create
     CategoryDto create(CategoryDto categoryDto);
@@ -18,6 +20,8 @@ public interface CategoryService {
 
     //get single category detail
     CategoryDto getCategoryById(String categoryId);
+
+    List<CategoryDto> searchCategory(String keyword);
 
     //search
 }

@@ -13,7 +13,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Service
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
@@ -24,6 +30,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto create(CategoryDto categoryDto) {
+
+        //generating category Id automatically using UUID
+        String categoryId = UUID.randomUUID().toString();
+        categoryDto.setCategoryId(categoryId);
+
         Category category = mapper.map(categoryDto, Category.class);
         Category savedCategory = categoryRepository.save(category);
         CategoryDto categoryDto1 = mapper.map(savedCategory, CategoryDto.class);
@@ -69,6 +80,21 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto getCategoryById(String categoryId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category with given id not found"));
         return mapper.map(category,CategoryDto.class);
+    }
+
+    @Override
+    public List<CategoryDto> searchCategory(String keyword) {
+        List<Category> categories_list = categoryRepository.findByTitleContaining(keyword);
+
+        //Throwing exception if category list is empty
+        if(categories_list.isEmpty()){
+            throw new ResourceNotFoundException("No category found for the searched keyword");
+        }
+
+        List<CategoryDto> categoryDtoList = categories_list.stream()
+                .map(category -> mapper.map(category, CategoryDto.class))
+                .collect(Collectors.toList());
+        return categoryDtoList;
     }
 
 }
