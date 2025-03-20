@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -28,6 +29,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto createProduct(ProductDto productDto) {
+
+        //auto generating productId using UUID
+        String productId = UUID.randomUUID().toString();
+        productDto.setProductId(productId);
+
         //converting Dto to entity
         Product product = mapper.map(productDto, Product.class);
         Product savedProduct = productRepository.save(product);
@@ -78,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public PageableResponse<ProductDto> getAllLiveProducts(int pageNumber, int pageSize, String sortBy, String sortDir) {
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
-        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
 
         Page<Product> byIsLiveTrue_page = productRepository.findByIsLiveTrue(pageable);
         PageableResponse<ProductDto> pageableResponse = Helper.getPageableResponse(byIsLiveTrue_page, ProductDto.class);
@@ -89,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public PageableResponse<ProductDto> searchProduct(String keyword, int pageNumber, int pageSize, String sortBy, String sortDir) {
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
-        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
 
         Page<Product> byProductTitleContaining_page = productRepository.findByProductTitleContaining(keyword, pageable);
         PageableResponse<ProductDto> pageableResponse = Helper.getPageableResponse(byProductTitleContaining_page, ProductDto.class);
