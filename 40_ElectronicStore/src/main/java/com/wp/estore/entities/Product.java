@@ -30,5 +30,6 @@ public class Product {
     private boolean isLive;
     private boolean stock;
     private int discountedPrice;
+    private String productImage;
 
 }

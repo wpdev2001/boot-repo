@@ -8,13 +8,22 @@ import com.wp.estore.helper.Helper;
 import com.wp.estore.repositories.ProductRepository;
 import com.wp.estore.services.ProductService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,12 +36,19 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ModelMapper mapper;
 
+    @Value("${product.image.path}")
+    private String imagePath;
+
+    private Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
+
     @Override
     public ProductDto createProduct(ProductDto productDto) {
 
         //auto generating productId using UUID
         String productId = UUID.randomUUID().toString();
         productDto.setProductId(productId);
+
+        productDto.setAddedDate(new Date());
 
         //converting Dto to entity
         Product product = mapper.map(productDto, Product.class);
@@ -53,6 +69,7 @@ public class ProductServiceImpl implements ProductService {
         product.setQuantity(productDto.getQuantity());
         product.setLive(productDto.isLive());
         product.setStock(productDto.isStock());
+        product.setProductImage(productDto.getProductImage());
         Product updatedProduct = productRepository.save(product);
         return mapper.map(updatedProduct, ProductDto.class);
 
@@ -61,6 +78,20 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(String productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product with given Id not found!!!"));
+
+        String fullPath = imagePath + product.getProductImage();
+
+        //delete product image if the product is deleted
+        try{
+            Path path = Paths.get(fullPath);
+            Files.delete(path);
+        } catch (NoSuchFileException e) {
+            logger.info("Product Image not found in folder");
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
         productRepository.delete(product);
     }
 
