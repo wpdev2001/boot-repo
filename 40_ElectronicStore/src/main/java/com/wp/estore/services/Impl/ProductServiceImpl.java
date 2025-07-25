@@ -2,9 +2,11 @@ package com.wp.estore.services.Impl;
 
 import com.wp.estore.dtos.PageableResponse;
 import com.wp.estore.dtos.ProductDto;
+import com.wp.estore.entities.Category;
 import com.wp.estore.entities.Product;
 import com.wp.estore.exceptions.ResourceNotFoundException;
 import com.wp.estore.helper.Helper;
+import com.wp.estore.repositories.CategoryRepository;
 import com.wp.estore.repositories.ProductRepository;
 import com.wp.estore.services.ProductService;
 import org.modelmapper.ModelMapper;
@@ -34,6 +36,9 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
     private ModelMapper mapper;
 
     @Value("${product.image.path}")
@@ -44,14 +49,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto createProduct(ProductDto productDto) {
 
+        Product product = mapper.map(productDto, Product.class);
+
         //auto generating productId using UUID
         String productId = UUID.randomUUID().toString();
-        productDto.setProductId(productId);
+        product.setProductId(productId);
+        product.setAddedDate(new Date());
 
-        productDto.setAddedDate(new Date());
-
-        //converting Dto to entity
-        Product product = mapper.map(productDto, Product.class);
         Product savedProduct = productRepository.save(product);
 
         //converting entity to Dto
@@ -131,6 +135,23 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> byProductTitleContaining_page = productRepository.findByProductTitleContaining(keyword, pageable);
         PageableResponse<ProductDto> pageableResponse = Helper.getPageableResponse(byProductTitleContaining_page, ProductDto.class);
         return pageableResponse;
+    }
+
+    @Override
+    public ProductDto createWithCategory(ProductDto productDto, String categoryId) {
+        //fetch the category from dto
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category not found!!!"));
+        Product product = mapper.map(productDto, Product.class);
+
+        String productId = UUID.randomUUID().toString();
+        product.setProductId(productId);
+        product.setAddedDate(new Date());
+        product.setCategory(category);
+
+        Product savedProduct = productRepository.save(product);
+
+        //converting entity to Dto
+        return mapper.map(savedProduct,ProductDto.class);
     }
 
 }

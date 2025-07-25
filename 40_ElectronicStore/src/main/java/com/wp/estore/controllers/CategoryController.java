@@ -1,11 +1,9 @@
 package com.wp.estore.controllers;
 
-import com.wp.estore.dtos.ApiResponseMessage;
-import com.wp.estore.dtos.CategoryDto;
-import com.wp.estore.dtos.ImageResponse;
-import com.wp.estore.dtos.PageableResponse;
+import com.wp.estore.dtos.*;
 import com.wp.estore.services.CategoryService;
 import com.wp.estore.services.FileService;
+import com.wp.estore.services.ProductService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +26,9 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+    
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private FileService fileService;
@@ -122,5 +123,15 @@ public class CategoryController {
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
 
         StreamUtils.copy(resource,response.getOutputStream());
+    }
+
+    //create product with category
+    @PostMapping("/{categoryId}/products")
+    public ResponseEntity<ProductDto> productDtoResponseEntity(
+            @PathVariable String categoryId,
+            @RequestBody ProductDto productDto
+    ){
+        ProductDto createdProduct = productService.createWithCategory(productDto, categoryId);
+        return new ResponseEntity<>(createdProduct,HttpStatus.CREATED);
     }
 }

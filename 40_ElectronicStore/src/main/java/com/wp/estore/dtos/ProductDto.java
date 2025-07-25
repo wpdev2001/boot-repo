@@ -30,4 +30,5 @@ public class ProductDto {
     private boolean stock;
     private int discountedPrice;
     private String productImage;
+    private CategoryDto category;
 }
