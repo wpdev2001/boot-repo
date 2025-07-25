@@ -1,5 +1,6 @@
 package com.wp.estore.services.Impl;
 
+import com.wp.estore.dtos.CategoryDto;
 import com.wp.estore.dtos.PageableResponse;
 import com.wp.estore.dtos.ProductDto;
 import com.wp.estore.entities.Category;
@@ -152,6 +153,27 @@ public class ProductServiceImpl implements ProductService {
 
         //converting entity to Dto
         return mapper.map(savedProduct,ProductDto.class);
+    }
+
+    @Override
+    public ProductDto updateCategory(String productId, String categoryId) {
+        //fetch product
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product with given id not found"));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category with given Id not found"));
+        product.setCategory(category);
+        Product savedProduct = productRepository.save(product);
+        return mapper.map(savedProduct,ProductDto.class);
+    }
+
+    @Override
+    public PageableResponse<ProductDto> getAllProductsOfCategory(String categoryId,int pageNumber, int pageSize, String sortBy, String sortDir) {
+        Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
+
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Given Category not found"));
+        Page<Product> productByCategory = productRepository.findByCategory(category,pageable);
+
+        return Helper.getPageableResponse(productByCategory,ProductDto.class);
     }
 
 }
