@@ -6,7 +6,9 @@ import com.wp.estore.entities.Cart;
 import com.wp.estore.entities.CartItems;
 import com.wp.estore.entities.Product;
 import com.wp.estore.entities.User;
+import com.wp.estore.exceptions.BadApiRequest;
 import com.wp.estore.exceptions.ResourceNotFoundException;
+import com.wp.estore.repositories.CartItemRepository;
 import com.wp.estore.repositories.CartRepository;
 import com.wp.estore.repositories.ProductRepository;
 import com.wp.estore.repositories.UserRepository;
@@ -28,12 +30,18 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private CartRepository cartRepository;
     @Autowired
+    private CartItemRepository cartItemRepository;
+    @Autowired
     private ModelMapper mapper;
 
     @Override
     public CartDto addItemToCart(String userId, AddItemToCartRequest cartRequest) {
         int quantity = cartRequest.getQuantity();
         String productId = cartRequest.getProductId();
+
+        if(quantity<=0){
+            throw new BadApiRequest("Quantity is lesser than or equals zero!!!");
+        }
 
         //fetch the product
         Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product Not found!!!"));
@@ -94,12 +102,29 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void removeItemFromCart(String userId, int cartItem) {
-
+    public void removeItemFromCart(int cartItem) {
+        CartItems cartItems = cartItemRepository.findById(cartItem).orElseThrow(() -> new ResourceNotFoundException("Cart Item not found!!!"));
+        cartItemRepository.delete(cartItems);
     }
 
     @Override
     public void clearCart(String userId) {
 
+        //fetch user
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not found!!!"));
+        //fetch cart from user
+        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new ResourceNotFoundException("User's cart not found!!!"));
+        cart.getCartItems().clear();
+        cartRepository.save(cart);
+
+    }
+
+    @Override
+    public CartDto getCartByUser(String userId) {
+        //fetch user
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not found!!!"));
+        //fetch cart from user
+        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new ResourceNotFoundException("User's cart not found!!!"));
+        return mapper.map(cart, CartDto.class);
     }
 }
