@@ -3,6 +3,9 @@ package com.wp.estore.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,4 +28,6 @@ public class User {
     private String about;
     @Column(name = "user_image_name")
     private String imageName;
+    @OneToMany(mappedBy ="user" ,cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+    private List<Order> orderList = new ArrayList<>();
 }
