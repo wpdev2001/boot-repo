@@ -29,5 +29,5 @@ public class Order {
     @JoinColumn(name = "user")
     private User user;
     @OneToMany(mappedBy = "order",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private List<OrderItems> orderItems = new ArrayList<>();
+    private List<OrderItems> orderItems = new ArrayList();
 }
