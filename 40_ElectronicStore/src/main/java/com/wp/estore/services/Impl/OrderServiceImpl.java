@@ -1,5 +1,6 @@
 package com.wp.estore.services.Impl;
 
+import com.wp.estore.dtos.CreateOrderRequest;
 import com.wp.estore.dtos.OrderDto;
 import com.wp.estore.dtos.PageableResponse;
 import com.wp.estore.entities.*;
@@ -11,18 +12,22 @@ import com.wp.estore.repositories.OrderRepository;
 import com.wp.estore.repositories.UserRepository;
 import com.wp.estore.services.OrderService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Service
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -35,7 +40,11 @@ public class OrderServiceImpl implements OrderService {
     private ModelMapper modelMapper;
 
     @Override
-    public OrderDto createOrder(OrderDto orderDto, String userId, String cartId) {
+    public OrderDto createOrder(CreateOrderRequest orderDto) {
+
+        //fetch userId and cartId from createOrderRequest
+        String userId = orderDto.getUserId();
+        String cartId = orderDto.getCartId();
         //fetch user
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         //fetch cart
@@ -51,8 +60,8 @@ public class OrderServiceImpl implements OrderService {
                 .billingName(orderDto.getBillingName())
                 .billingPhone(orderDto.getBillingPhone())
                 .billingAddress(orderDto.getBillingAddress())
-                .orderedDate(orderDto.getOrderedDate())
-                .deliveredDate(orderDto.getDeliveredDate())
+                .orderedDate(new Date())
+                .deliveredDate(null)
                 .paymentStatus(orderDto.getPaymentStatus())
                 .orderStatus(orderDto.getOrderStatus())
                 .orderId(UUID.randomUUID().toString())
@@ -77,7 +86,10 @@ public class OrderServiceImpl implements OrderService {
             return orderItems;
         }).collect(Collectors.toList());
 
-        //clear cart
+        order.setOrderItems(orderItemsList);
+        order.setOrderAmount(orderAmount.get());
+
+        //clear cart once we get the order from the cart
         cart.getCartItems().clear();
         cartRepository.save(cart);
 
@@ -105,5 +117,21 @@ public class OrderServiceImpl implements OrderService {
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         Page<Order> page = orderRepository.findAll(pageable);
         return Helper.getPageableResponse(page,OrderDto.class);
+    }
+
+    @Override
+    public OrderDto updateOrder(String orderId, OrderDto orderDto) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+
+        /**
+         * Only non-null and (for strings) non-empty fields from
+         * orderDto will update order; null or empty fields are
+         * ignored and existing values in order remain unchanged.
+         */
+        BeanUtils.copyProperties(orderDto, order, Helper.getNullOrEmptyPropertyNames(orderDto));
+        // save the updated order
+        orderRepository.save(order);
+        return modelMapper.map(order, OrderDto.class);
     }
 }

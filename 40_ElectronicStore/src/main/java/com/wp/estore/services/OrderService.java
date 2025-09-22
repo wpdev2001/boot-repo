@@ -1,11 +1,12 @@
 package com.wp.estore.services;
+import com.wp.estore.dtos.CreateOrderRequest;
 import com.wp.estore.dtos.OrderDto;
 import com.wp.estore.dtos.PageableResponse;
 import java.util.List;
 
 public interface OrderService {
     //create order
-    OrderDto createOrder(OrderDto orderDto,String userId, String cartId);
+    OrderDto createOrder(CreateOrderRequest createOrderRequest);
 
     //remove order
     void removeOrder(String orderId);
@@ -17,4 +18,5 @@ public interface OrderService {
     PageableResponse<OrderDto> getAllOrders(int pageNo, int pageSize, String sortBy, String sortDir);
 
 
+    OrderDto updateOrder(String orderId, OrderDto orderDto);
 }

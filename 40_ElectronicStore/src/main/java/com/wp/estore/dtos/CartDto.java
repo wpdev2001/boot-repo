@@ -1,6 +1,5 @@
 package com.wp.estore.dtos;
 
-import com.wp.estore.entities.User;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -15,6 +14,6 @@ import java.util.List;
 public class CartDto {
     private String cartId;
     private Date createdAt;
-    private User user;
+    private UserDto user;
     private List<CartItemsDto> cartItems = new ArrayList<>();
 }

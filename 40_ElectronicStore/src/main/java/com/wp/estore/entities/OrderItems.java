@@ -16,6 +16,7 @@ public class OrderItems {
     private int quantity;
     private int totalPrice;
     @OneToOne
+    @JoinColumn(name = "product")
     private Product product;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "orders")
